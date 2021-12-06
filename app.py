@@ -4,11 +4,10 @@ import pickle
 
 app = Flask(__name__)
 
-loaded_model = pickle.load(open('finalized_model.sav', 'rb'))  # load model
-
 
 @app.route('/predict/', methods=['POST'])
 def get_prediction():
+    loaded_model = pickle.load(open('finalized_model.sav', 'rb'))  # load model
     req_json = json.loads(request.data)  # read request
     age = req_json['age']
     weight = req_json['weight']
