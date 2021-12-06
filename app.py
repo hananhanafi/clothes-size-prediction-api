@@ -1,13 +1,13 @@
 import json
 from flask import Flask, request, jsonify
-import pickle
+# import pickle
 
 app = Flask(__name__)
 
 
 @app.route('/predict/', methods=['POST'])
 def get_prediction():
-    loaded_model = pickle.load(open('finalized_model.sav', 'rb'))  # load model
+    # loaded_model = pickle.load(open('finalized_model.sav', 'rb'))  # load model
     req_json = json.loads(request.data)  # read request
     age = req_json['age']
     weight = req_json['weight']
@@ -16,9 +16,9 @@ def get_prediction():
     bmi = req_json['weight']/((req_json['height']/100)**2)  # BMI Calculation
     x = [[weight, age, height, bmi]]  # Save array of request data into variable x
 
-    result = loaded_model.predict(x)  # predict
-    result_str = [str(i) for i in result]  # save the result
-    return jsonify({'output': result_str})  # return model output
+    # result = loaded_model.predict(x)  # predict
+    # result_str = [str(i) for i in result]  # save the result
+    return jsonify({'output': x})  # return model output
 
 
 # A welcome message to test our server
@@ -29,4 +29,4 @@ def index():
 
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support
-    app.run(threaded=True, port=5000)
+    app.run(debug=True, threaded=True, port=5000)
