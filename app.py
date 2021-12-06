@@ -25,7 +25,7 @@ def get_prediction():
     return jsonify({'output': result_str})  # return model output
 
 
-app.run(host='0.0.0.0', port=port, debug=True)
-
+# app.run(host='0.0.0.0', port=port, debug=True)
+app.run(debug=True, port=33507)
 # if __name__ == '__main__':
 #     app.run()
