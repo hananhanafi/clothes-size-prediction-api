@@ -1,6 +1,10 @@
+import os
 import json
 from flask import Flask, request, jsonify
 import pickle
+
+port = int(os.environ.get('PORT', 5000))
+
 app = Flask(__name__)
 
 loaded_model = pickle.load(open('finalized_model.sav', 'rb'))  # load model
@@ -21,5 +25,7 @@ def get_prediction():
     return jsonify({'output': result_str})  # return model output
 
 
-if __name__ == '__main__':
-    app.run()
+app.run(host='0.0.0.0', port=port, debug=True)
+
+# if __name__ == '__main__':
+#     app.run()
