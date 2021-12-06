@@ -1,16 +1,13 @@
-import os
 import json
 from flask import Flask, request, jsonify
 import pickle
-
-port = int(os.environ.get('PORT', 5000))
 
 app = Flask(__name__)
 
 loaded_model = pickle.load(open('finalized_model.sav', 'rb'))  # load model
 
 
-@app.route('/', methods=['POST'])
+@app.route('/predict/', methods=['POST'])
 def get_prediction():
     req_json = json.loads(request.data)  # read request
     age = req_json['age']
@@ -25,7 +22,12 @@ def get_prediction():
     return jsonify({'output': result_str})  # return model output
 
 
-# app.run(host='0.0.0.0', port=port, debug=True)
-app.run(debug=True, port=33507)
-# if __name__ == '__main__':
-#     app.run()
+# A welcome message to test our server
+@app.route('/')
+def index():
+    return "<h1>Welcome to our server !!</h1>"
+
+
+if __name__ == '__main__':
+    # Threaded option to enable multiple instances for multiple user access support
+    app.run(threaded=True, port=5000)
