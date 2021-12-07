@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Prediksi Ukuran Baju</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <script src="static/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="kotak">
+        <h2 class="judul">PREDIKSI UKURAN BAJU</h2>
+        <form method="post" id="form-target">
+            <input type="text" name="weight" class="bil" autocomplete="off" placeholder="Masukkan Berat Badan">
+            <input type="text" name="height" class="bil" autocomplete="off" placeholder="Masukkan Tinggi Badan">
+            <input type="text" name="age" class="bil" autocomplete="off" placeholder="Masukkan Umur">
+
+            <input type="text" value="" class="opt" readonly="" disabled>
+            <input type="submit" name="prediksi" value="Prediksi" class="tombol">
+        </form>
+        <h4 class="judul">© 2021 Hanan Hanafi & Hani Fania N</h4>
+    </div>
+</body>
+
+<script>
+    $( document ).ready(function() {
+        const api_url = window.location.origin;
+
+        $('#form-target').submit(function (e) {
+            e.preventDefault();
+
+            const endpoint = '/predict';
+            const full_url = api_url + endpoint;
+
+            const form_data = $(this).serializeArray();
+            const weight = form_data[0].value;
+            const height = form_data[1].value;
+            const age = form_data[2].value;
+
+            const result_element = $('.opt');
+            
+            if(weight !== "" && height !== "" && age !== ""){
+                result_element.val("Loading...");
+                $.ajax({
+                    type : 'POST',
+                    url : full_url,
+                    contentType: "application/json",
+                    data : JSON.stringify({
+                        "weight" : weight,
+                        "height" : height,
+                        "age" : age,
+                    }),
+                    success : function(res) {
+                        const hasil = res.output[0];
+                        result_element.val( "Hasil Prediksi : " + hasil);
+                    },
+                    error : function(res) {
+                        alert("Terjadi error, mohon coba lagi nanti.")
+                        result_element.val("");
+                    }
+                })
+            }else {
+                alert("Mohon data diisi dengan lengkap!");
+            }
+        })
+    });
+</script>
+
+</html>
